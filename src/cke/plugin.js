@@ -25,8 +25,6 @@ export default class EquationEditorPlugin extends Plugin {
   }
 
   openEquationEditor() {
-    const editor = this.editor;
-
     // Create a modal dialog for the equation editor
     const modal = createElement(document, 'div', {
       class: 'cke-equation-editor-modal',
