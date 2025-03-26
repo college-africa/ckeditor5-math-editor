@@ -14,7 +14,7 @@ import {
   Plugin,
 } from 'ckeditor5';
 import 'ckeditor5/ckeditor5.css';
-import MathEditor from './cke/plugin';
+import MathEditor from './plugin.cke';
 
 class Timestamp extends Plugin {
   init() {
