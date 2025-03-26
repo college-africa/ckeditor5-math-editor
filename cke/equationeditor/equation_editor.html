@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script
+      type="text/javascript"
+      src="//code.jquery.com/jquery-2.1.1.js"
+    ></script>
+    <script type="text/javascript" src="/build/js/mathquill.min.js"></script>
+    <script type="text/javascript" src="/build/js/equation_editor.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/build/mathquill.css" />
+    <link rel="stylesheet" type="text/css" href="/build/equation_editor.css" />
+  </head>
+  <body class="equation-editor">
+    <div class="cols">
+      <div class="math-form col">
+        <div class="button-bar"></div>
+        <div class="math"></div>
+      </div>
+      <div class="button-groups col"></div>
+    </div>
+    <script type="text/javascript">
+      // Initialize the equation editor
+      const params = new URLSearchParams(window.location.search);
+      const existingLatex = params.get('existingLatex') || '';
+
+      const equationEditor = new EquationEditor.EquationEditorView({
+        $el: $('.equation-editor'),
+        existingLatex: existingLatex,
+        restrictions: {},
+      }).render();
+
+      // Pass the LaTeX back to CKEditor5 when done
+      window.onclose = () => {
+        const latex = equationEditor.input().mathquill('latex');
+        window.parent.postMessage({ latex }, '*');
+      };
+    </script>
+  </body>
+</html>
