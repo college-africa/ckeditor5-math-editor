@@ -1,6 +1,4 @@
-import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
-import ButtonView from '@ckeditor/ckeditor5-ui/src/button/buttonview';
-import { createElement } from '@ckeditor/ckeditor5-utils/src/dom';
+import { Plugin, ButtonView, createElement } from 'ckeditor5';
 
 export default class EquationEditorPlugin extends Plugin {
   init() {
