@@ -101,7 +101,7 @@ This configures what buttons show up where. The basic structure is as follows:
 ```
 
 A button configuration accepts four keys:
-- `klass`: the button class to instantiate (e.g. `EquationEditor.Buttons.WriteButtonView`)
+- `klass`: the button class to instantiate (e.g. `MathEditor.Buttons.WriteButtonView`)
 - `latex`: the LaTeX code/command that the button will execute
 - `buttonText`: the LaTeX code for rendering the button (optional; defaults to the `latex` value)
 - `className`: extra classes to apply to the HTML element (optional; always gets "math-button")
@@ -114,11 +114,11 @@ By default, all button groups are enabled.
 
 ### button_views.coffee
 
-This contains the rendering logic for a single button. When it's clicked, we fire an event on the event pipeline, `EquationEditor.Events` which we will listen for from `EquationEditor.EquationEditorView`.
+This contains the rendering logic for a single button. When it's clicked, we fire an event on the event pipeline, `MathEditor.Events` which we will listen for from `MathEditor.MathEditorView`.
 
 ### button_group_view.coffee
 
-Handles rendering the group name and the contained button views. Also makes itself collapsible using `EquationEditor.CollapsibleView`
+Handles rendering the group name and the contained button views. Also makes itself collapsible using `MathEditor.CollapsibleView`
 
 ### collapsible_view.coffee
 
@@ -130,17 +130,17 @@ Translates button configurations from `config.json` into button instances.
 
 ### button_group_view_factory.coffee
 
-Translates button group view configurations from `config.json` into button group view instances. Utilizes `EquationEditor.ButtonViewFactory` to translate the child button views.
+Translates button group view configurations from `config.json` into button group view instances. Utilizes `MathEditor.ButtonViewFactory` to translate the child button views.
 
 ### equation_editor_view.coffee
 
-`EquationEditor.EquationEditorView` ties everything together.
+`MathEditor.MathEditorView` ties everything together.
 
 It listens for `latex:command` and `latex:write` events fired from the buttons. It fetches the configuration and adds the buttons appropriately. It interacts with the textarea via Mathquill commands.
 
 ### equation_editor.html
 
-This is the file opened in the iframe by TinyMCE. It sets up the basic DOM structure which is filled in by the JavaScript. It handles the communication between TinyMCE regarding existing LaTeX (when editing an existing equation) and restrictions. It instantiates the `EquationEditor.EquationEditorView` and gives TinyMCE a reference to it, allowing the plugin to get the contents.
+This is the file opened in the iframe by TinyMCE. It sets up the basic DOM structure which is filled in by the JavaScript. It handles the communication between TinyMCE regarding existing LaTeX (when editing an existing equation) and restrictions. It instantiates the `MathEditor.MathEditorView` and gives TinyMCE a reference to it, allowing the plugin to get the contents.
 
 ### plugin.coffee
 
