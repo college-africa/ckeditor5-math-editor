@@ -48,15 +48,15 @@ export class MathEditorView extends View {
     this.restrictions = options.restrictions || {};
 
     // Bind methods to maintain correct `this` context
-    this.handleCommandButton = this.handleCommandButton.bind(this);
-    this.handleWriteButton = this.handleWriteButton.bind(this);
+    // this.handleCommandButton = this.handleCommandButton.bind(this);
+    // this.handleWriteButton = this.handleWriteButton.bind(this);
     this.focus = this.focus.bind(this);
   }
 
   protected initialize(): void {
     // Assuming a global event system or using a pub/sub pattern
-    events.on('latex:command', this.handleCommandButton);
-    events.on('latex:write', this.handleWriteButton);
+    events.on('latex:command', this.handleCommandButton, this);
+    events.on('latex:write', this.handleWriteButton, this);
   }
 
   render(): this {
@@ -77,7 +77,7 @@ export class MathEditorView extends View {
     this.focus();
   }
 
-  private input(): JQuery {
+  public input(): JQuery {
     return this.$('.math');
   }
 

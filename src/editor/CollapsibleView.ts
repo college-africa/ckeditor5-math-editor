@@ -8,8 +8,11 @@ export class CollapsibleView extends View {
     this.toggleCollapse = this.toggleCollapse.bind(this);
   }
 
-  protected initialize(): void {
-    this.$('.collapsible-box-toggle').on('click', this.toggleCollapse);
+  protected initialize() {
+    this.$('.collapsible-box-toggle').on(
+      'click',
+      this.toggleCollapse.bind(this)
+    );
   }
 
   private toggleCollapse(e: Event): void {

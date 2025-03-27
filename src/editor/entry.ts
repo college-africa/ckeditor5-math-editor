@@ -1,6 +1,8 @@
+import MathEditorView from './MathEditorView';
+
 // Initialize the equation editor
 const params = new URLSearchParams(window.location.search);
-const existingLatex = params.get('existingLatex') || '';
+const existingLatex = params.get('existingLatex') ?? '';
 
 const equationEditor = new MathEditorView({
   $el: $('.equation-editor'),
