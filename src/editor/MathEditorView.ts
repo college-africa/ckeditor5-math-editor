@@ -3,7 +3,7 @@ import ButtonViewFactory from './ButtonViewFactory';
 import { ButtonOptions } from './ButtonViews';
 import config from './config.json';
 import { events } from './events';
-import { View } from './View'; // Assuming the previous View class
+import { View } from './View';
 
 // Interfaces for type safety
 interface MathEditorOptions {
@@ -17,13 +17,11 @@ interface MathEditorOptions {
 }
 
 interface ButtonConfig {
-  // Define button configuration structure
   label: string;
   latex: string;
 }
 
 interface ButtonGroupConfig {
-  // Define button group configuration structure
   name: string;
   buttons: ButtonConfig[];
 }
@@ -40,6 +38,7 @@ interface EditorConfig {
 export class MathEditorView extends View {
   private readonly existingLatex?: string;
   private readonly restrictions: NonNullable<MathEditorOptions['restrictions']>;
+  private mathquillInstance: any;
 
   constructor(options: MathEditorOptions = {}) {
     super(options);
@@ -48,33 +47,39 @@ export class MathEditorView extends View {
     this.restrictions = options.restrictions || {};
 
     // Bind methods to maintain correct `this` context
-    // this.handleCommandButton = this.handleCommandButton.bind(this);
-    // this.handleWriteButton = this.handleWriteButton.bind(this);
     this.focus = this.focus.bind(this);
   }
 
   protected initialize(): void {
-    // Assuming a global event system or using a pub/sub pattern
     events.on('latex:command', this.handleCommandButton, this);
     events.on('latex:write', this.handleWriteButton, this);
+  }
+
+  private initializeMathquill(): void {
+    // Use the latest Mathquill initialization
+    const MQ = window.MathQuill.getInterface(2);
+    const input = this.$('.math')[0];
+
+    this.mathquillInstance = MQ.MathField(input, {
+      spaceBehavesLikeTab: true,
+      handlers: {
+        // Optional: add custom event handlers
+        enter: () => {
+          // Handle enter key if needed
+        },
+      },
+    });
+
+    // Set existing latex if provided
+    if (this.existingLatex) {
+      this.setExistingLatex(this.existingLatex);
+    }
   }
 
   render(): this {
     this.addButtonBar();
     this.addButtonGroups();
-    this.enableMathMagic();
     return this;
-  }
-
-  private enableMathMagic(): void {
-    this.$('.math-button a').mathquill();
-    this.input().mathquill('editable');
-
-    if (this.existingLatex != null) {
-      this.input().mathquill('latex', this.existingLatex);
-    }
-
-    this.focus();
   }
 
   public input(): JQuery {
@@ -136,25 +141,31 @@ export class MathEditorView extends View {
   }
 
   private performCommand(latex: string): void {
-    this.input().mathquill('cmd', latex);
+    if (this.mathquillInstance) {
+      this.mathquillInstance.cmd(latex);
+    }
   }
 
   private performWrite(latex: string): void {
-    this.input().mathquill('write', latex);
+    if (this.mathquillInstance) {
+      this.mathquillInstance.write(latex);
+    }
   }
 
   private focus(): void {
-    this.$('textarea').focus();
+    if (this.mathquillInstance) {
+      this.mathquillInstance.focus();
+    }
   }
 
   public getLatex(): string {
-    return this.input().mathquill('latex');
+    return this.mathquillInstance ? this.mathquillInstance.latex() : '';
   }
 
   public setExistingLatex(latex?: string) {
-    if (!latex) return;
+    if (!latex || !this.mathquillInstance) return;
 
-    this.input().mathquill('latex', latex);
+    this.mathquillInstance.latex(latex);
     this.focus();
   }
 }
