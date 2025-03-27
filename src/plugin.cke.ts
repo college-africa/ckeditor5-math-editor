@@ -1,6 +1,10 @@
-import { Plugin, ButtonView, createElement } from 'ckeditor5';
+import { Plugin, ButtonView, View, Dialog, Locale } from 'ckeditor5';
 
 export default class MathEditor extends Plugin {
+  get requires() {
+    return [Dialog];
+  }
+
   init(): void {
     const editor = this.editor;
 
@@ -15,31 +19,94 @@ export default class MathEditor extends Plugin {
       });
 
       button.on('execute', () => {
-        this.openMathEditor();
+        this.openMathEditor(button, locale);
       });
 
       return button;
     });
   }
 
-  openMathEditor(): void {
-    // Create a modal dialog for the math editor
-    const modal = createElement(document, 'div', {
-      class: 'cke-math-editor-modal',
+  openMathEditor(button: ButtonView, locale: Locale): void {
+    const dialog = this.editor.plugins.get('Dialog');
+
+    // If the button is turned on, hide the modal.
+    if (button.isOn) {
+      dialog.hide();
+      button.isOn = false;
+
+      return;
+    }
+
+    button.isOn = true;
+
+    // Otherwise, show the modal.
+    // First, create a view with some simple content. It will be displayed as the dialog's body.
+    const iframeView = new View(locale);
+
+    iframeView.setTemplate({
+      tag: 'iframe',
+      attributes: {
+        id: 'mathEditorIframe',
+        style: {
+          // margin: 'var(--ck-spacing-large)',
+          width: '800px',
+          height: '320px',
+        },
+        tabindex: -1,
+        src: 'editor.html',
+        frameborder: '0',
+      },
     });
 
-    modal.innerHTML = `
-			<iframe src="editor.html" frameborder="0"></iframe>
-		`;
+    // Tell the plugin to display a modal with the title, content, and one action button.
+    dialog.show({
+      id: 'mathEditorDialog',
+      isModal: true,
+      title: 'Math Editor',
+      content: iframeView,
+      actionButtons: [
+        {
+          label: 'close',
+          withText: true,
+          onExecute: () => dialog.hide(),
+        },
+        {
+          label: 'insert',
+          class: 'ck-button-action',
+          withText: true,
+          onExecute: () => {
+            this.insertMath();
+            dialog.hide();
+          },
+        },
+      ],
+      onHide() {
+        button.isOn = false;
+      },
+    });
+  }
 
-    document.body.appendChild(modal);
+  insertMath(): void {
+    const iframe = document.querySelector(
+      '#mathEditorIframe'
+    ) as HTMLIFrameElement;
 
-    // Close the modal when done
-    const iframe = modal.querySelector('iframe');
     if (iframe?.contentWindow) {
-      iframe.contentWindow.onclose = () => {
-        document.body.removeChild(modal);
-      };
+      // @ts-ignore
+      const mathExpression = iframe.contentWindow?.MathQuill?.getLatex(); // Retrieve the MathQuill LaTeX expression
+
+      if (mathExpression) {
+        this.editor.model.change((writer) => {
+          const mathElement = writer.createElement('math', {
+            latex: mathExpression,
+          });
+
+          this.editor.model.insertContent(
+            mathElement,
+            this.editor.model.document.selection
+          );
+        });
+      }
     }
   }
 }

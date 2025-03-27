@@ -11,28 +11,12 @@ import {
   Italic,
   Paragraph,
   List,
-  Plugin,
 } from 'ckeditor5';
 import 'ckeditor5/ckeditor5.css';
 import MathEditor from './plugin.cke';
 
-class Timestamp extends Plugin {
-  init() {
-    console.log('Timestamp was initialized');
-  }
-}
-
 ClassicEditor.create(document.querySelector('#editor') as HTMLElement, {
-  plugins: [
-    Essentials,
-    Paragraph,
-    Heading,
-    List,
-    Bold,
-    Italic,
-    Timestamp,
-    MathEditor,
-  ],
+  plugins: [Essentials, Paragraph, Heading, List, Bold, Italic, MathEditor],
   toolbar: [
     'heading',
     'bold',
