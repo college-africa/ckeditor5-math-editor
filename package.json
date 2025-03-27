@@ -10,8 +10,7 @@
     "convert": "node scripts/converter.js"
   },
   "dependencies": {
-    "ckeditor5": "^44.0.0",
-    "jquery": "^2.1.1"
+    "ckeditor5": "^44.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
