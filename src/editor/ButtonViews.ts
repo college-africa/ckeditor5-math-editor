@@ -53,15 +53,4 @@ class WriteButtonView extends BaseButtonView {
   protected event = 'write' as const;
 }
 
-// // Attach to global namespace for backwards compatibility
-// namespace MathEditor {
-//   export namespace Buttons {
-//     export const BaseButtonView = BaseButtonView;
-//     export const CommandButtonView = CommandButtonView;
-//     export const WriteButtonView = WriteButtonView;
-//   }
-// }
-
-// (window as any).MathEditor = MathEditor;
-
 export { BaseButtonView, CommandButtonView, WriteButtonView };

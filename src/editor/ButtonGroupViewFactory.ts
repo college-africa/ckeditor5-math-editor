@@ -21,11 +21,4 @@ class ButtonGroupViewFactory {
   }
 }
 
-// // Attach to global namespace
-// namespace MathEditor {
-//   export const ButtonGroupViewFactory = ButtonGroupViewFactory;
-// }
-
-// (window as any).MathEditor = MathEditor;
-
 export default ButtonGroupViewFactory;

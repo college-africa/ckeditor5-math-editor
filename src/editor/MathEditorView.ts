@@ -147,8 +147,15 @@ export class MathEditorView extends View {
     this.$('textarea').focus();
   }
 
-  public equationLatex(): string {
+  public getLatex(): string {
     return this.input().mathquill('latex');
+  }
+
+  public setExistingLatex(latex?: string) {
+    if (!latex) return;
+
+    this.input().mathquill('latex', latex);
+    this.focus();
   }
 }
 

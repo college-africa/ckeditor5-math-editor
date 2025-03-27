@@ -44,11 +44,4 @@ export class CollapsibleView extends View {
   }
 }
 
-// // Attach to global namespace for backwards compatibility
-// namespace MathEditor {
-//   export const CollapsibleView = CollapsibleView;
-// }
-
-// (window as any).MathEditor = MathEditor;
-
 export default CollapsibleView;

@@ -53,11 +53,4 @@ export class ButtonGroupView extends View {
   }
 }
 
-// // Attach to global namespace for backwards compatibility
-// namespace MathEditor {
-//   export const ButtonGroupView = ButtonGroupView;
-// }
-
-// (window as any).MathEditor = MathEditor;
-
 export default ButtonGroupView;
