@@ -11,7 +11,8 @@
     "postinstall": "yarn convert"
   },
   "dependencies": {
-    "ckeditor5": "^44.0.0"
+    "ckeditor5": "^44.0.0",
+    "jquery": "^2.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
@@ -19,6 +20,7 @@
     "@babel/plugin-proposal-optional-chaining": "^7.21.0",
     "@babel/plugin-transform-class-properties": "^7.23.3",
     "@babel/preset-env": "^7.24.0",
+    "@types/jquery": "^2.0.0",
     "coffeescript": "^2.7.0",
     "mkdirp": "^3.0.1",
     "vite": "^5.2.0"
