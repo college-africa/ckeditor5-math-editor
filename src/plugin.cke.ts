@@ -55,7 +55,7 @@ export default class MathEditor extends Plugin {
         style: {
           // margin: 'var(--ck-spacing-large)',
           width: '800px',
-          height: '320px',
+          height: '340px',
         },
         tabindex: -1,
         src: 'editor.html',
@@ -103,23 +103,26 @@ export default class MathEditor extends Plugin {
 
     const latex = iframeWindow?.getLatex();
 
-    if (!latex) return;
-
-    // Convert LaTeX to a mathematical element
-    const mathElement = `\\(${latex}\\)`;
+    if (!latex) {
+      console.warn('No LaTeX content found');
+      return;
+    }
 
     // Get the current editor
     const editor = this.editor;
 
     // Execute a command to insert the math element
     editor.model.change((writer) => {
-      // Create a math element
-      const mathNode = writer.createElement('mathInline', {
-        latex: mathElement,
+      // Create a span element with math-tex class and LaTeX content
+      const mathSpan = writer.createElement('span', {
+        class: 'math-tex',
       });
 
+      // Add the LaTeX text to the span
+      writer.insertText(`$${latex}$`, mathSpan);
+
       // Insert the math element at the current selection
-      editor.model.insertContent(mathNode);
+      editor.model.insertContent(mathSpan);
     });
   }
 }
