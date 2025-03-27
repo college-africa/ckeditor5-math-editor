@@ -7,8 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "convert": "node scripts/converter.js",
-    "postinstall": "yarn convert"
+    "convert": "node scripts/converter.js"
   },
   "dependencies": {
     "ckeditor5": "^44.0.0",

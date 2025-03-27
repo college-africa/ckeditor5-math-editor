@@ -109,7 +109,7 @@ class CoffeeScriptConverter {
 // Usage example
 async function main() {
   // Example usage: convert files from 'coffee-src' to 'js-dist'
-  const converter = new CoffeeScriptConverter('src.old', 'src.old.js');
+  const converter = new CoffeeScriptConverter('old', 'old.js');
   await converter.convertDirectory();
 }
 
